@@ -19,6 +19,9 @@ use pocketmine\entity\Snowball;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Egg;
 
+use pocketmine\level\sound\BlazeShootSound;
+use pocketmine\level\sound\AnvilFallSound;
+
 
 class Main extends PluginBase implements Listener {
 
@@ -73,6 +76,7 @@ class Main extends PluginBase implements Listener {
 
 						$e->setMotion($e->getMotion()->multiply($this->getConfig()->get("speed")));
 						$e->spawnToAll();
+						$player->getLevel()->addSound(new BlazeShootSound($player), [$player]);
 
 					array_push($this->users, $player->getId());
 					if($this->getConfig()->get("cooldown") == 'true' && $player->hasPermission('shootingrod.cooldown')){ //TODO : Enable option for specific players.
@@ -91,6 +95,7 @@ class Main extends PluginBase implements Listener {
 			if(in_array($event->getEntity()->getId(), $this->users)){
 				$event->setDamage($this->getConfig()->get("damage")); //TODO : add armor support
 				unset($this->users[array_search($event->getEntity()->getId(), $this->users)]);
+				$event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
 			}
 		}
 	}
