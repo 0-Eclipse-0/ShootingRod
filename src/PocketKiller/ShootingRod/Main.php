@@ -37,7 +37,7 @@ class Main extends PluginBase implements Listener {
 		}
 
 		if(!$this->checkConfig()){
-			$this->getLogger()->error("there was a problem with your config.yml, please delete it and restart the server for a new clean config.");
+			$this->getLogger()->error("there was a problem with your config.yml, please delete it and restart the server for a new clean config, or check it.");
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 		}
 	}
@@ -95,7 +95,7 @@ class Main extends PluginBase implements Listener {
 			if(in_array($event->getDamager()->getId(), $this->users)){
 				$event->setDamage($this->getConfig()->get("damage")); //TODO : add armor support
 				unset($this->users[array_search($event->getDamager()->getId(), $this->users)]);
-				$event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
+				$event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()), $event->getEntity()->getLevel()->getPlayers());
 			}
 		}
 	}
