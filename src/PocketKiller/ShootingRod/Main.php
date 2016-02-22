@@ -92,9 +92,9 @@ class Main extends PluginBase implements Listener {
 
 	public function onDamage(EntityDamageEvent $event){
 		if($event instanceof \pocketmine\event\entity\EntityDamageByEntityEvent){
-			if(in_array($event->getEntity()->getId(), $this->users)){
+			if(in_array($event->getDamager()->getId(), $this->users)){
 				$event->setDamage($this->getConfig()->get("damage")); //TODO : add armor support
-				unset($this->users[array_search($event->getEntity()->getId(), $this->users)]);
+				unset($this->users[array_search($event->getDamager()->getId(), $this->users)]);
 				$event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
 			}
 		}
