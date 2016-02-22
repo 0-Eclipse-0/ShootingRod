@@ -1,0 +1,15 @@
+---
+#enables cooldown for shooting, true or false.
+cooldown: true
+#time for cooldown by seconds
+cooldown-time: 10
+
+#shot entity type, available types: Arrow, Snowball, Egg
+type: Egg
+
+#damage given for getting hitted by the snowball/arrow/egg, set 0 to disable
+damage: 7
+
+#speed of the arrow/egg/snowball
+speed: 1.5
+...

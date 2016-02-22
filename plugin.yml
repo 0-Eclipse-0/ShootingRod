@@ -1,0 +1,12 @@
+name: ShootingRod
+version: 1.0.0
+api: [1.0.0]
+main: PocketKiller\ShootingRod\Main
+author: PocketKiller
+load: POSTWORLD
+permissions:
+ shootingrod.use:
+  default: false
+
+ shootingrod.cooldown:
+  default: false
