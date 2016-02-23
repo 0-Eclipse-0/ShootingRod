@@ -46,7 +46,7 @@ class Main extends PluginBase implements Listener {
 		if($event->getPacket() instanceof UseItemPacket){
 			$player = $event->getPlayer();
 			if($player->getInventory()->getItemInHand()->getId() == 346 && $player->hasPermission('shootingrod.use')){
-				if(!isset($this->disallowed[$player->getId()])){
+				if(!$this->isAllowed()){
 						$namedTag = new CompoundTag("", [
 								"Pos" => new EnumTag("Pos", [
 									new DoubleTag("", $player->x),
@@ -78,11 +78,11 @@ class Main extends PluginBase implements Listener {
 						$e->spawnToAll();
 						$player->getLevel()->addSound(new BlazeShootSound($player), [$player]);
 
-					array_push($this->users, $player->getId());
-					if($this->getConfig()->get("cooldown") == 'true' && $player->hasPermission('shootingrod.cooldown')){ //TODO : Enable option for specific players.
-						$this->disallowed[$player->getId()] = $player->getId();
-						$this->getServer()->getScheduler()->scheduleDelayedTask(new Cooldown($this, $player), $this->getConfig()->get("cooldown-time") * 20);
-						return;
+						$this->addUser($player);
+						if($this->getConfig()->get("cooldown") == 'true' && $player->hasPermission('shootingrod.cooldown')){ //TODO : Enable option for specific players.
+							$this->setAllowed($player, false);
+							$this->getServer()->getScheduler()->scheduleDelayedTask(new Cooldown($this, $player), $this->getConfig()->get("cooldown-time") * 20);
+							return;
 					}
 					return;
 				} elseif(isset($this->disallowed[$player->getId()])) $player->sendTip("§c§lCooldown...");
@@ -92,15 +92,15 @@ class Main extends PluginBase implements Listener {
 
 	public function onDamage(EntityDamageEvent $event){
 		if($event instanceof \pocketmine\event\entity\EntityDamageByEntityEvent){
-			if(in_array($event->getDamager()->getId(), $this->users)){
+			if($this->isUser($event->getDamager())){
 				$event->setDamage($this->getConfig()->get("damage")); //TODO : add armor support
-				unset($this->users[array_search($event->getDamager()->getId(), $this->users)]);
+				$this->removeUser($event->getDamager());
 				$event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()), $event->getEntity()->getLevel()->getPlayers());
 			}
 		}
 	}
 
-	public function checkConfig() : bool{
+	private function checkConfig() : bool{
 		if($this->getConfig()->get("damage") !== null && $this->getConfig()->get("cooldown") !== null && $this->getConfig()->get("cooldown-time") !== null && $this->getConfig()->get("type") !== null && $this->getConfig()->get("speed") !== null){
 			
 			$entities = array('snowball', 'arrow', 'egg');
@@ -113,5 +113,28 @@ class Main extends PluginBase implements Listener {
 			return false;
 		}
 		return false;
+	}
+
+	private function isUser(Player $p) : bool{
+		return in_array($p->getId(), $this->users);
+	}
+
+	private function addUser(Player $p) : bool{
+		array_push($this->users, $p->getId());
+		return true;
+	}
+
+	private function removeUser(Player $p) : bool{
+		unset($this->users[array_search($p->getId(), $this->users)]);
+		return true;
+	}
+
+	public function setAllowed(Player $p, bool $b) : bool{
+		!($b) ? $this->disallowed[$p->getId()] = $p->getId(); : unset($this->disallowed[$p->getId()]);
+		return true;
+	}
+
+	public function isAllowed(Player $p) : bool{
+		return isset($this->disallowed[$p->getId()]);
 	}
 }

@@ -14,7 +14,7 @@ class Cooldown extends PluginTask {
     }
 
     public function onRun($tick) {
-        unset($this->plugin->disallowed[$this->player->getId()]);
+        $this->plugin->setAllowed($this->player, true);
         $this->plugin->getServer()->getScheduler()->cancelTask($this->getTaskId());
     }
 }
