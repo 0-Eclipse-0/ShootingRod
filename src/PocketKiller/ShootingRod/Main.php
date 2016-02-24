@@ -85,7 +85,7 @@ class Main extends PluginBase implements Listener {
 							return;
 					}
 					return;
-				} elseif(isset($this->disallowed[$player->getId()])) $player->sendTip("§c§lCooldown...");
+				} elseif(!$this->isAllowed($player)) $player->sendTip("§c§lCooldown...");
 			}
 		}
 	}
