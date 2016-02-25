@@ -32,8 +32,8 @@ class Main extends PluginBase implements Listener {
 		$this->saveDefaultConfig();
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 
-		if($this->getServer()->getName() == "Genisys"){
-			$this->getServer()->getPluginManager()->registerEvents(new GenisysHack(), $this);// a Genisys hack which cancels PlayerFishEvent only for Genisys users.
+		if($this->getServer()->getName() == "Genisys" || $this->getServer()->getName() == "ImagicalMine"){
+			$this->getServer()->getPluginManager()->registerEvents(new ThirdPartyHack(), $this);// a Genisys hack which cancels PlayerFishEvent only for Genisys users.
 		}
 
 		if(!$this->checkConfig()){
