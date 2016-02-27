@@ -79,7 +79,8 @@ class Main extends PluginBase implements Listener {
 						$player->getLevel()->addSound(new BlazeShootSound($player), [$player]);
 
 						$this->addUser($player);
-						if($this->getConfig()->get("cooldown") == 'true' && $player->hasPermission('shootingrod.cooldown')){ //TODO : Enable option for specific players.
+
+						if($this->getConfig()->get("cooldown") == 'true' && $player->hasPermission('shootingrod.cooldown')){
 							$this->setAllowed($player, false);
 							$this->getServer()->getScheduler()->scheduleDelayedTask(new Cooldown($this, $player), $this->getConfig()->get("cooldown-time") * 20);
 							return;
@@ -130,7 +131,12 @@ class Main extends PluginBase implements Listener {
 	}
 
 	public function setAllowed(Player $p, bool $b) : bool{
-		!($b) ? $this->disallowed[$p->getId()] = $p->getId() : unset($this->disallowed[$p->getId()]);
+		if($b){
+			$this->disallowed[$p->getId()] = $p->getId();
+			return true;
+		}
+
+		unset($this->disallowed[$p->getId()]);
 		return true;
 	}
 
