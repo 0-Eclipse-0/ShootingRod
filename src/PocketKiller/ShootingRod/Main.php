@@ -130,7 +130,7 @@ class Main extends PluginBase implements Listener {
 	}
 
 	public function setAllowed(Player $p, bool $b) : bool{
-		!($b) ? $this->disallowed[$p->getId()] = $p->getId(); : unset($this->disallowed[$p->getId()]);
+		!($b) ? $this->disallowed[$p->getId()] = $p->getId() : unset($this->disallowed[$p->getId()]);
 		return true;
 	}
 
