@@ -33,7 +33,7 @@ class Main extends PluginBase implements Listener {
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 
 		if($this->getServer()->getName() == "Genisys" || $this->getServer()->getName() == "ImagicalMine"){
-			$this->getServer()->getPluginManager()->registerEvents(new ThirdPartyHack(), $this);// a Genisys hack which cancels PlayerFishEvent only for Genisys users.
+			$this->getServer()->getPluginManager()->registerEvents(new ThirdPartyHack(), $this);// a Third Party hack which cancels PlayerFishEvent only for Genisys users.
 		}
 
 		if(!$this->checkConfig()){
@@ -46,7 +46,7 @@ class Main extends PluginBase implements Listener {
 		if($event->getPacket() instanceof UseItemPacket){
 			$player = $event->getPlayer();
 			if($player->getInventory()->getItemInHand()->getId() == 346 && $player->hasPermission('shootingrod.use')){
-				if(!$this->isAllowed()){
+				if(!$this->isAllowed($player)){
 						$namedTag = new CompoundTag("", [
 								"Pos" => new EnumTag("Pos", [
 									new DoubleTag("", $player->x),
