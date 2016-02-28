@@ -10,7 +10,7 @@ use pocketmine\network\protocol\UseItemPacket;
 
 use pocketmine\event\entity\EntityDamageEvent;
 
-use pocketmine\nbt\tag\EnumTag;
+use pocketmine\nbt\tag\ListTag as EnumTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\CompoundTag;
