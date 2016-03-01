@@ -14,6 +14,7 @@ turn a normal Fishing Rod into a Shooting Rod!
 ---
 # Enables cooldown for shooting, true or false.
 cooldown: true
+
 # Time for cooldown by seconds
 cooldown-time: 10
 
